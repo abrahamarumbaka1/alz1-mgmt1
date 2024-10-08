@@ -28,4 +28,4 @@ module "enterprise_scale" {
     azurerm.connectivity = azurerm.connectivity
     azurerm.management   = azurerm.management
   }
-}}
+}
