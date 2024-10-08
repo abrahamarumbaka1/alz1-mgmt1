@@ -16,6 +16,38 @@ module "enterprise_scale" {
   deploy_online_landing_zones  = true
   root_id                      = var.root_id
   root_name                    = var.root_name
+
+
+  library_path   = "${path.root}/lib"
+
+  custom_landing_zones = {
+    "${var.root_id}-online-example-1" = {
+      display_name               = "${upper(var.root_id)} Online Example 1"
+      parent_management_group_id = "${var.root_id}-landing-zones"
+      subscription_ids           = []
+      archetype_config = {
+        archetype_id   = "customer_online"
+        parameters     = {}
+        access_control = {}
+      }
+    }
+    "${var.root_id}-online-example-2" = {
+      display_name               = "${upper(var.root_id)} Online Example 2"
+      parent_management_group_id = "${var.root_id}-landing-zones"
+      subscription_ids           = []
+      archetype_config = {
+        archetype_id = "customer_online"
+        parameters = {
+          Deny-Resource-Locations = {
+            listOfAllowedLocations = ["eastus", ]
+          }
+          Deny-RSG-Locations = {
+            listOfAllowedLocations = ["eastus", ]
+          }
+        }
+        access_control = {}
+      }
+    }
   subscription_id_connectivity = var.subscription_id_connectivity
   subscription_id_identity     = var.subscription_id_identity
   subscription_id_management   = var.subscription_id_management
@@ -25,4 +57,5 @@ module "enterprise_scale" {
     azurerm.connectivity = azurerm.connectivity
     azurerm.management   = azurerm.management
   }
+}
 }
